@@ -1,5 +1,17 @@
 import { object, string, number, array, Output } from "valibot";
 
+/**Auth user */
+
+const authSchema = object({
+    name: string(),
+    email: string(),
+    password: string(),
+    password_confirmation: string(),
+});
+
+type Auth = Output < typeof authSchema > ;
+export type UserLoginForm = Pick < Auth, "email" | "password" > ;
+
 export const DraftPatnerSchema = object({
     numero_socio: string(),
     fecha_apertura: string(),

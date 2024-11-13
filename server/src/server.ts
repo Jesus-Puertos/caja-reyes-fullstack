@@ -4,16 +4,17 @@ import db from './config/db';
 import colors from 'colors';
 import swaggerUI from 'swagger-ui-express';
 import swaggerSpec, {SwaggerUiOptions} from './config/swagger';
-import cors, {CorsOptions} from 'cors';
+import cors from 'cors';
 import morgan from 'morgan';
 import authRoutes from './routes/authRoutes';
+import { corsConfig } from './config/cors';
 
 //Conexión a la base de datos
 async function connectDB(){
     try{
         await db.authenticate();
         db.sync();
-        // console.log(colors.magenta('Conexión a la base de datos exitosa'))
+        console.log(colors.magenta('Conexión a la base de datos exitosa'))
     }
     catch(error){
         //console.log(error)
@@ -26,19 +27,9 @@ connectDB();
 const server = express();
 
 //Permitir CORS
-const corsOptions: CorsOptions = {
-    origin: function(origin, callback){
-        if(origin === process.env.FRONTEND_UR, process.env.API_URL){
-            callback(null, true);
-        }else{
-            callback(new Error('No permitido por CORS'));
-        }
 
-    }
 
-}; 
-
-server.use(cors(corsOptions));
+server.use(cors(corsConfig));
 
 //Leer datos del formulario
 server.use(express.json());
